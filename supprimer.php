@@ -6,13 +6,13 @@ $pdo = getPDO();
 $id = (int)($_GET['id'] ?? 0);
 
 if ($id > 0) {
-    $stmt = $pdo->prepare('SELECT nom_complet FROM dirigeants WHERE id_dirigeant = :id');
+    $stmt = $pdo->prepare('SELECT description FROM formalites WHERE id_formalite = :id');
     $stmt->execute([':id' => $id]);
-    $dirigeant = $stmt->fetch();
-    if ($dirigeant) {
-        $pdo->prepare('DELETE FROM dirigeants WHERE id_dirigeant = :id')->execute([':id' => $id]);
-        logAudit('DELETE', 'dirigeants', $id, 'Suppression du dirigeant ' . $dirigeant['nom_complet']);
-        $_SESSION['flash_succes'] = 'Dirigeant supprimé avec succès.';
+    $formalite = $stmt->fetch();
+    if ($formalite) {
+        $pdo->prepare('DELETE FROM formalites WHERE id_formalite = :id')->execute([':id' => $id]);
+        logAudit('DELETE', 'formalites', $id, 'Suppression de la formalité ' . $formalite['description']);
+        $_SESSION['flash_succes'] = 'Formalité supprimée avec succès.';
     }
 }
 redirect('liste.php');
